@@ -228,18 +228,19 @@ th, td {
   font-size: 16px;
 }
 th {
-  background: #001f4d;
+  background: #081220;
   color: #ffcc00;
 }
-tr:nth-child(even) { background: #2f4a80; }
-tr:nth-child(odd)  { background: #3b5ca7; }
+tr:nth-child(even) { background: #5071bd; }
+tr:nth-child(odd)  { background: #5c81d8; }
 tr:hover td {
-  background: #4a6fc2;
+  background: #41527a;
   transition: 0.3s;
 }
 button {
   display: block;
   margin: 20px auto 0;
+
 }
 
 /* =======================
@@ -288,7 +289,7 @@ button {
   font-family: "Segoe UI", Roboto, Arial, sans-serif;
 }
 .site-title {
-  background: #0b3b66;
+  background: #113d64;
   color: #fff;
   text-align: center;
   padding: 18px 0;
@@ -315,11 +316,11 @@ button {
   border-spacing: 2;
   border-radius: 8px;
   box-shadow: 0 8px 18px rgba(0,0,0,0.25);
-  background: linear-gradient(180deg,#10293d 0%, #123b5b 100%);
+  background: linear-gradient(180deg,#040c12 0%, #123b5b 100%);
   color: #fff;
 }
 .students-table thead th {
-  background: linear-gradient(90deg,#266892, #24404e);
+  background: linear-gradient(90deg,#486170, #24404e);
   padding: 12px 18px;
   font-weight:700;
   font-size:16px;
@@ -350,9 +351,9 @@ button {
   min-width: 100px;
   min-height: 20px;
 }
-.action-btn.edit { background:#63a0c9; color:#fff; }
+.action-btn.edit { background:#144d52; color:#fff; }
 .action-btn.edit:hover { background:#5588a9; }
-.action-btn.delete { background:#235248; color:#fff; }
+.action-btn.delete { background:#35796a; color:#fff; }
 .action-btn.delete:hover { background:#c0cca0; }
 @media (max-width:780px){
   .students-table{ width:95%;}
