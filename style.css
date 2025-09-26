@@ -521,3 +521,62 @@ button {
   color: #0a2e63;
   font-weight: 700;
 }
+
+
+
+/* Container */
+.timetable-container {
+  width: 90%;
+  margin: 30px auto;
+  background: #2c3e50;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 12px rgba(0,0,0,0.4);
+  color: white;
+}
+
+.timetable-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #f1c40f;
+}
+
+/* Table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #34495e;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+th, td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #555;
+}
+
+th {
+  background: #f39c12;
+  color: black;
+}
+
+tr:hover {
+  background: #3d566e;
+}
+
+/* Button */
+.add-btn {
+  margin-top: 15px;
+  background: #7ad4a0;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.add-btn:hover {
+  background: #96f6c4;
+}
