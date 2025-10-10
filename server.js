@@ -26,6 +26,136 @@ db.connect(err => {
 // ========================
 // 📌 API Routes
 // ========================
+// 👉 Students CRUD API
+// Get all students
+app.get("/students", (req, res) => {
+  db.query("SELECT * FROM students ORDER BY id ASC", (err, result) => {
+    if (err) {
+      console.error("❌ Students GET Error:", err.message);
+      return res.status(500).send({ error: "DB error" });
+    }
+    res.send(result);
+  });
+});
+
+// Get single student by id
+app.get("/students/:id", (req, res) => {
+  db.query("SELECT * FROM students WHERE id = ?", [req.params.id], (err, result) => {
+    if (err) {
+      console.error("❌ Students GET by ID Error:", err.message);
+      return res.status(500).send({ error: "DB error" });
+    }
+    res.send(result[0] || {});
+  });
+});
+
+// Add new student
+app.post("/students", (req, res) => {
+  const { name, class: classBatch } = req.body;
+  db.query(
+    "INSERT INTO students (name, class) VALUES (?, ?)",
+    [name, classBatch],
+    (err, result) => {
+      if (err) {
+        console.error("❌ Students POST Error:", err.message);
+        return res.status(500).send({ error: "DB error" });
+      }
+      res.send({ success: true, id: result.insertId });
+    }
+  );
+});
+
+// Update student
+app.put("/students/:id", (req, res) => {
+  const { name, class: classBatch } = req.body;
+  db.query(
+    "UPDATE students SET name=?, class=? WHERE id=?",
+    [name, classBatch, req.params.id],
+    (err, result) => {
+      if (err) {
+        console.error("❌ Students PUT Error:", err.message);
+        return res.status(500).send({ error: "DB error" });
+      }
+      res.send({ success: true });
+    }
+  );
+});
+
+// Delete student
+app.delete("/students/:id", (req, res) => {
+  db.query("DELETE FROM students WHERE id = ?", [req.params.id], (err, result) => {
+    if (err) {
+      console.error("❌ Students DELETE Error:", err.message);
+      return res.status(500).send({ error: "DB error" });
+    }
+    res.send({ success: true });
+  });
+});
+// 👉 Timetable CRUD API
+// Get all timetable entries
+app.get("/timetable", (req, res) => {
+  db.query("SELECT * FROM timetable ORDER BY date DESC", (err, result) => {
+    if (err) {
+      console.error("❌ Timetable GET Error:", err.message);
+      return res.status(500).send({ error: "DB error" });
+    }
+    res.send(result);
+  });
+});
+
+// Get single timetable entry by id
+app.get("/timetable/:id", (req, res) => {
+  db.query("SELECT * FROM timetable WHERE id = ?", [req.params.id], (err, result) => {
+    if (err) {
+      console.error("❌ Timetable GET by ID Error:", err.message);
+      return res.status(500).send({ error: "DB error" });
+    }
+    res.send(result[0] || {});
+  });
+});
+
+// Add new timetable entry
+app.post("/timetable", (req, res) => {
+  const { date, day, class: classBatch, period_time, subject, teacher } = req.body;
+  db.query(
+    "INSERT INTO timetable (date, day, class, period_time, subject, teacher) VALUES (?, ?, ?, ?, ?, ?)",
+    [date, day, classBatch, period_time, subject, teacher],
+    (err, result) => {
+      if (err) {
+        console.error("❌ Timetable POST Error:", err.message);
+        return res.status(500).send({ error: "DB error" });
+      }
+      res.send({ success: true, id: result.insertId });
+    }
+  );
+});
+
+// Update timetable entry
+app.put("/timetable/:id", (req, res) => {
+  const { date, day, class: classBatch, period_time, subject, teacher } = req.body;
+  db.query(
+    "UPDATE timetable SET date=?, day=?, class=?, period_time=?, subject=?, teacher=? WHERE id=?",
+    [date, day, classBatch, period_time, subject, teacher, req.params.id],
+    (err, result) => {
+      if (err) {
+        console.error("❌ Timetable PUT Error:", err.message);
+        return res.status(500).send({ error: "DB error" });
+      }
+      res.send({ success: true });
+    }
+  );
+});
+
+// Delete timetable entry
+app.delete("/timetable/:id", (req, res) => {
+  db.query("DELETE FROM timetable WHERE id = ?", [req.params.id], (err, result) => {
+    if (err) {
+      console.error("❌ Timetable DELETE Error:", err.message);
+      return res.status(500).send({ error: "DB error" });
+    }
+    res.send({ success: true });
+  });
+});
 // 👉 User Registration
 app.post("/register", (req, res) => {
   console.log("[REGISTER] Request body:", req.body);
@@ -125,7 +255,7 @@ app.get("/attendance/:student_id", (req, res) => {
 // ========================
 // 📌 Start Server
 // ========================
-const PORT = 8080;
+const PORT = 3000;
 app.listen(PORT, () => {console.log('🚀 Server running on http://localhost:${PORT}');
 });
 
@@ -144,3 +274,4 @@ CREATE TABLE users (
 // --- Debugging ---
 // If you get 'Server error' in the frontend, check your backend terminal for MySQL errors or CORS issues.
 // Make sure the backend is running and the table exists.
+

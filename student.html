@@ -22,9 +22,10 @@
       <li><a class="nav-link" href="index.html">Home</a></li>
       <li><a class="nav-link active" href="student.html">Students</a></li>
       <li><a class="nav-link" href="attendance.html">Attendance</a></li>
+      <li><a class="nav-link" href="timetable.html">Time Table</a></li>
       <li><a class="nav-link" href="report.html">Reports</a></li>
       <li><a class="nav-link" href="dashboard.html">Dashboard</a></li>
-      <li><a class="nav-link" href="timetable.html">Time Table</a></li>
+      
     </ul>
   </nav>
 
@@ -34,7 +35,6 @@
 
     <div class="card">
       <h2 class="card-title">👨‍🎓 Manage Students</h2>
-
       <div class="table-wrap">
         <table class="students-table">
           <thead>
@@ -42,33 +42,113 @@
               <th>Roll No</th>
               <th>Name</th>
               <th>Class</th>
-              <th>Actions</th>
+              <th class="center">Action</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td>Vaishnavi Deshmane</td>
-              <td>BBA(CA)</td>
-              <td class="center">
-                <button class="action-btn edit">Edit</button>
-                <button class="action-btn delete">Delete</button>
-              </td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>Renuka Atkare</td>
-              <td>BBA(CA)</td>
-              <td class="center">
-                <button class="action-btn edit">Edit</button>
-                <button class="action-btn delete">Delete</button>
-              </td>
-            </tr>
+          <tbody id="students-body">
+            <!-- Student rows will be loaded dynamically -->
           </tbody>
         </table>
+<!-- Add Student button at bottom of page -->
+</div> <!-- page-wrap end -->
+<button id="addStudentBtn" class="action-btn add add-student-btn bottom-add-btn">Add Student</button>
       </div>
     </div>
-  </div>
 
+    <!-- Modal for Add/Edit Student -->
+  <div id="studentModal" class="modal">
+      <div class="modal-content">
+        <span id="closeStudent" class="close">&times;</span>
+        <h2 id="studentModalTitle">Add Student</h2>
+        <form id="studentForm">
+          <label for="studentName">Name:</label>
+          <input type="text" id="studentName" required><br>
+          <label for="studentClass">Class:</label>
+          <input type="text" id="studentClass" required><br>
+          <div class="modal-add-btn-wrap">
+            <button type="submit" id="studentSubmitBtn" class="action-btn add modal-add-btn">Add</button>
+          </div>
+        </form>
+      </div>
+    </div>
+</div> <!-- page-wrap end -->
+<script>
+// Student Modal and Table Logic with Backend Integration
+let _editingId = null;
+
+async function loadStudents() {
+  const tbody = document.getElementById("students-body");
+  try {
+    const res = await fetch("http://localhost:3000/students");
+    const students = await res.json();
+    tbody.innerHTML = "";
+    students.forEach((student, i) => {
+      tbody.innerHTML += `
+        <tr>
+          <td>${i + 1}</td>
+          <td>${student.name}</td>
+          <td>${student.class}</td>
+          <td class='center'>
+            <button class='action-btn edit' onclick='editStudentRow(${student.id}, this)'>Edit</button>
+            <button class='action-btn delete' onclick='deleteStudentRow(${student.id})'>Delete</button>
+          </td>
+        </tr>
+      `;
+    });
+  } catch (err) {
+    tbody.innerHTML = "<tr><td colspan='4'>Error loading students</td></tr>";
+  }
+}
+window.onload = loadStudents;
+
+document.getElementById("addStudentBtn").onclick = function() {
+  _editingId = null;
+  document.getElementById("studentModalTitle").textContent = "Add Student";
+  document.getElementById("studentForm").reset();
+  document.getElementById("studentSubmitBtn").textContent = "Add";
+  document.getElementById("studentModal").style.display = "block";
+};
+
+function editStudentRow(id, btn) {
+  const tr = btn.closest('tr');
+  _editingId = id;
+  document.getElementById("studentModalTitle").textContent = "Edit Student";
+  document.getElementById("studentName").value = tr.children[1].textContent;
+  document.getElementById("studentClass").value = tr.children[2].textContent;
+  document.getElementById("studentSubmitBtn").textContent = "Update";
+  document.getElementById("studentModal").style.display = "block";
+}
+
+async function deleteStudentRow(id) {
+  if (!confirm("Are you sure you want to delete this student?")) return;
+  await fetch(`http://localhost:3000/students/${id}`, { method: "DELETE" });
+  loadStudents();
+}
+
+document.getElementById("studentForm").addEventListener("submit", async function(e) {
+  e.preventDefault();
+  const name = document.getElementById("studentName").value;
+  const classBatch = document.getElementById("studentClass").value;
+  const student = { name, class: classBatch };
+  if (_editingId) {
+    await fetch(`http://localhost:3000/students/${_editingId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(student)
+    });
+  } else {
+    await fetch("http://localhost:3000/students", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(student)
+    });
+  }
+  document.getElementById("studentModal").style.display = "none";
+  document.getElementById("studentForm").reset();
+  loadStudents();
+});
+document.getElementById("closeStudent").onclick = function() {
+  document.getElementById("studentModal").style.display = "none";
+};
+</script>
 </body>
-</html>

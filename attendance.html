@@ -22,9 +22,9 @@
       <li><a class="nav-link" href="index.html">Home</a></li>
       <li><a class="nav-link" href="student.html">Students</a></li>
       <li><a class="nav-link active" href="attendance.html">Attendance</a></li>
+      <li><a class="nav-link" href="Timetable.html">Timetable</a></li>
       <li><a class="nav-link" href="report.html">Reports</a></li>
       <li><a class="nav-link" href="dashboard.html">Dashboard</a></li>
-      <li><a class="nav-link" href="timetable.html">Time Table</a></li>
     </ul>
   </nav>
 
@@ -33,7 +33,7 @@
     <h2>📋 Mark Attendance</h2>
     <form>
       <div class="table-container">
-        <table>
+        <table id="attendanceTable">
           <tr>
             <th>Roll No</th>
             <th>Name</th>
@@ -43,64 +43,114 @@
           <tr>
             <td>1</td>
             <td>Vaishnavi Deshmane</td>
-            <td><input type="radio" name="student1" value="present"></td>
-            <td><input type="radio" name="student1" value="absent"></td>
+            <td><label><input type="radio" name="student1" value="present"> Present</label></td>
+            <td><label><input type="radio" name="student1" value="absent"> Absent</label></td>
           </tr>
           <tr>
             <td>2</td>
             <td>Renuka Atkare</td>
-            <td><input type="radio" name="student2" value="present"></td>
-            <td><input type="radio" name="student2" value="absent"></td>
+            <td><label><input type="radio" name="student2" value="present"> Present</label></td>
+            <td><label><input type="radio" name="student2" value="absent"> Absent</label></td>
           </tr>
-           <tr>
+          <tr>
             <td>3</td>
             <td>Nikhil Mete</td>
-            <td><input type="radio" name="student2" value="present"></td>
-            <td><input type="radio" name="student2" value="absent"></td>
+            <td><label><input type="radio" name="student3" value="present"> Present</label></td>
+            <td><label><input type="radio" name="student3" value="absent"> Absent</label></td>
           </tr>
-           <tr>
+          <tr>
             <td>4</td>
             <td>Rahul Patil</td>
-            <td><input type="radio" name="student2" value="present"></td>
-            <td><input type="radio" name="student2" value="absent"></td>
+            <td><label><input type="radio" name="student4" value="present"> Present</label></td>
+            <td><label><input type="radio" name="student4" value="absent"> Absent</label></td>
           </tr>
-           <tr>
+          <tr>
             <td>5</td>
             <td>Shivratna Sawargave</td>
-            <td><input type="radio" name="student2" value="present"></td>
-            <td><input type="radio" name="student2" value="absent"></td>
+            <td><label><input type="radio" name="student5" value="present"> Present</label></td>
+            <td><label><input type="radio" name="student5" value="absent"> Absent</label></td>
           </tr>
-           <tr>
+          <tr>
             <td>6</td>
             <td>Pandurang Manale</td>
-            <td><input type="radio" name="student2" value="present"></td>
-            <td><input type="radio" name="student2" value="absent"></td>
+            <td><label><input type="radio" name="student6" value="present"> Present</label></td>
+            <td><label><input type="radio" name="student6" value="absent"> Absent</label></td>
           </tr>
-           <tr>
+          <tr>
             <td>7</td>
             <td>Sanika Dhane</td>
-            <td><input type="radio" name="student2" value="present"></td>
-            <td><input type="radio" name="student2" value="absent"></td>
+            <td><label><input type="radio" name="student7" value="present"> Present</label></td>
+            <td><label><input type="radio" name="student7" value="absent"> Absent</label></td>
           </tr>
-           <tr>
+          <tr>
             <td>8</td>
             <td>Reshma Yadav</td>
-            <td><input type="radio" name="student2" value="present"></td>
-            <td><input type="radio" name="student2" value="absent"></td>
+            <td><label><input type="radio" name="student8" value="present"> Present</label></td>
+            <td><label><input type="radio" name="student8" value="absent"> Absent</label></td>
           </tr>
           <tr>
             <td>9</td>
             <td>Nitya Devkar</td>
-            <td><input type="radio" name="student2" value="present"></td>
-            <td><input type="radio" name="student2" value="absent"></td>
+            <td><label><input type="radio" name="student9" value="present"> Present</label></td>
+            <td><label><input type="radio" name="student9" value="absent"> Absent</label></td>
           </tr>
-          
         </table>
       </div>
-     
       <button type="submit" class="save-btn">Save Attendance</button>
-
     </form>
+
+    <script>
+      // Connect Attendance Form to Backend
+      document.querySelector("form").addEventListener("submit", async function(e) {
+        e.preventDefault();
+        const students = [
+          { id: 1, name: "Vaishnavi Deshmane" },
+          { id: 2, name: "Renuka Atkare" },
+          { id: 3, name: "Nikhil Mete" },
+          { id: 4, name: "Rahul Patil" },
+          { id: 5, name: "Shivratna Sawargave" },
+          { id: 6, name: "Pandurang Manale" },
+          { id: 7, name: "Sanika Dhane" },
+          { id: 8, name: "Reshma Yadav" },
+          { id: 9, name: "Nitya Devkar" }
+        ];
+        let allMarked = true;
+        for (const student of students) {
+          const status = document.querySelector(`input[name='student${student.id}']:checked`);
+          if (!status) {
+            allMarked = false;
+            break;
+          }
+        }
+        if (!allMarked) {
+          alert("Please mark attendance for all students.");
+          return;
+        }
+        let successCount = 0;
+        let failCount = 0;
+        for (const student of students) {
+          const status = document.querySelector(`input[name='student${student.id}']:checked`).value;
+          try {
+            const res = await fetch("http://localhost:3000/attendance", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ student_id: student.id, status })
+            });
+            if (!res.ok) throw new Error("Network response was not ok");
+            const data = await res.json();
+            if (data.success) successCount++;
+            else failCount++;
+          } catch (err) {
+            failCount++;
+          }
+        }
+        if (failCount === 0) {
+          alert("Attendance saved successfully!");
+        } else {
+          alert(`Some attendance records failed to save. Success: ${successCount}, Failed: ${failCount}`);
+        }
+      });
+    </script>
   </div>
 </body>
 </html>

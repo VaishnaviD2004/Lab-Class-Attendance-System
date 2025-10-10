@@ -1,3 +1,65 @@
+.tt-action-btn {
+  padding: 12px 32px;
+  font-size: 20px;
+  border-radius: 10px;
+  margin: 6px 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+}
+.tt-edit-btn {
+  background: linear-gradient(90deg, #5ec4c4 0%, #0a2e63 100%);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 10px 40px;
+  font-size: 20px;
+}
+.tt-edit-btn:hover {
+  background: linear-gradient(90deg, #0a2e63 0%, #5ec4c4 100%);
+  color: #fff;
+}
+.tt-delete-btn {
+  background: linear-gradient(90deg, #112b3b 0%, #c8c9d6 100%);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 10px 32px;
+  font-size: 20px;
+}
+.tt-delete-btn:hover {
+  background: linear-gradient(90deg, #9a5f86 0%, #d4a3a3 100%);
+  color: #fff;
+}
+.bottom-add-btn {
+  position: fixed;
+  left: 50%;
+  bottom: 70px;
+  transform: translateX(-50%);
+  z-index: 1001;
+  padding: 60px 200px;
+  font-size: 56px;
+  border-radius: 24px;
+  background: linear-gradient(90deg, #a788d3 0%, #42536d 100%);
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: 1.px;
+  border: none;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.18);
+  transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+.bottom-add-btn:hover {
+  background: linear-gradient(50deg, #8187b5 0%, #93e4fd 100%);
+  color: #fff;
+  box-shadow: 0 10px 32px rgba(0,0,0,0.22);
+  transform: translateX(-50%) scale(1.05);
+}
+.add-student-btn {
+  margin-bottom: 10px;
+}
+.modal-add-btn-wrap {
+  margin-top: 30px;
+  text-align: center;
+}
 /* =======================
    RESET + BASE
 ======================= */
@@ -173,10 +235,22 @@ body {
   border: 1px solid #ccc;
 }
 .modal button {
-  background: #0a2e63;
-  color: white;
+  background: #f8ad35;
+  color: #0a2e63;
   border: none;
   cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+.modal button:hover {
+  background: #0a2e63;
+  color: #fff;
+}
+.modal-add-btn {
+  width: 100%;
+  font-size: 18px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 .modal button:hover {
   background: #062046;
@@ -579,4 +653,12 @@ tr:hover {
 
 .add-btn:hover {
   background: #96f6c4;
+}
+
+/* My Button - Custom Class */
+.my-button {
+  width: 300px;
+  height: 80px;
+  padding: 40px 120px;   /* Increase space inside the button */
+  font-size: 36px;       /* Make the text larger */
 }

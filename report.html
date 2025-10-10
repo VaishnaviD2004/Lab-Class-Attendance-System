@@ -22,9 +22,10 @@
       <li><a class="nav-link" href="index.html">Home</a></li>
       <li><a class="nav-link" href="student.html">Students</a></li>
       <li><a class="nav-link" href="attendance.html">Attendance</a></li>
+      <li><a class="nav-link" href="timetable.html">Time Table</a></li>
       <li><a class="nav-link active" href="report.html">Reports</a></li>
       <li><a class="nav-link" href="dashboard.html">Dashboard</a></li>
-      <li><a class="nav-link" href="timetable.html">Time Table</a></li>
+     
     </ul>
   </nav>
 
@@ -40,47 +41,37 @@
         <th>Absent</th>
         <th>Percentage</th>
       </tr>
-      <tr>
-        <td>1</td>
-        <td>Renuka Atkare</td>
-        <td>30</td>
-        <td>28</td>
-        <td>2</td>
-        <td>93%</td>
-      </tr>
-      <tr>
-        <td>2</td>
-        <td>Vaishnavi Deshmane</td>
-        <td>30</td>
-        <td>28</td>
-        <td>2</td>
-        <td>93%</td>
-      </tr>
-      <tr>
-        <td>3</td>
-        <td>Rahul Patil</td>
-        <td>30</td>
-        <td>25</td>
-        <td>5</td>
-        <td>83%</td>
-      </tr>
-      <tr>
-        <td>4</td>
-        <td>Vaishnav Wange</td>
-        <td>30</td>
-        <td>28</td>
-        <td>2</td>
-        <td>69%</td>
-      </tr>
-      <tr>
-        <td>5</td>
-        <td>Rutik Aamte</td>
-        <td>30</td>
-        <td>28</td>
-        <td>2</td>
-        <td>76%</td>
-      </tr>
     </table>
+    <tbody id="report-body">
+      <!-- Report will be loaded here -->
+    </tbody>
+    </table>
+
+<script>
+async function loadReport() {
+  const tbody = document.getElementById("report-body");
+  try {
+    const res = await fetch("http://localhost:3000/report");
+    const report = await res.json();
+    tbody.innerHTML = "";
+    report.forEach((row, idx) => {
+      tbody.innerHTML += `
+        <tr>
+          <td>${idx + 1}</td>
+          <td>${row.name}</td>
+          <td>${row.total_days}</td>
+          <td>${row.present}</td>
+          <td>${row.absent}</td>
+          <td>${row.percentage}%</td>
+        </tr>
+      `;
+    });
+  } catch (err) {
+    tbody.innerHTML = "<tr><td colspan='6'>Error loading report</td></tr>";
+  }
+}
+window.onload = loadReport;
+</script>
   </div>
 
 </body>
